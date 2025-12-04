@@ -1,0 +1,95 @@
+{
+  "name": "@formajs/bind",
+  "version": "2.0.0",
+  "description": "The lightweight adapter that seamlessly connects Mold's fluent schemas to React Hook Form, Formik, VeeValidate, and beyond. Effortlessly sync validation, sanitization, and i18n-ready messages to your forms—no custom hooks, just pure FormaJS power unleashed.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./types/index.d.ts"
+    },
+    "./rhf": {
+      "import": "./dist/rhf.js",
+      "types": "./types/rhf.d.ts"
+    },
+    "./formik": {
+      "import": "./dist/formik.js",
+      "types": "./types/formik.d.ts"
+    },
+    "./veevalidate": {
+      "import": "./dist/veevalidate.js",
+      "types": "./types/veevalidate.d.ts"
+    },
+    "./tanstack": {
+      "import": "./dist/tanstack.js",
+      "types": "./types/tanstack.d.ts"
+    },
+    "./mantine": {
+      "import": "./dist/mantine.js",
+      "types": "./types/mantine.d.ts"
+    },
+    "./felte": {
+      "import": "./dist/felte.js",
+      "types": "./types/felte.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "formajs",
+    "mold",
+    "react-hook-form",
+    "formik",
+    "resolver",
+    "validator"
+  ],
+  "author": "FormaJS",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FormaJS/bind"
+  },
+  "bugs": {
+    "url": "https://github.com/FormaJS/bind/issues"
+  },
+  "homepage": "https://github.com/FormaJS/bind#readme",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "check": "npm run format && npm run lint"
+  },
+  "peerDependencies": {
+    "@formajs/mold": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react-hook-form": { "optional": true },
+    "formik": { "optional": true },
+    "vee-validate": { "optional": true },
+    "@tanstack/react-form": { "optional": true },
+    "@mantine/form": { "optional": true },
+    "felte": { "optional": true }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@vitest/coverage-istanbul": "^4.0.5",
+    "@vitest/coverage-v8": "^4.0.3",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "rollup": "^4.52.5",
+    "terser": "^5.44.0",
+    "vitest": "^4.0.3",
+    "react-hook-form": "^7.53.0",
+    "formik": "^2.4.6"
+  }
+}
