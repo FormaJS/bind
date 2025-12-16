@@ -43,9 +43,23 @@ module.exports = [
   },
   {
     input: 'src/svelte5.js',
-    output: { file: 'dist/svelte5.js', format: 'es', sourcemap: false, exports: 'named' },
-    plugins: [resolve(), commonjs(), terser()],
-    external: ['@formajs/mold', 'svelte/store', 'svelte/internal']
+    output: [
+      {
+        file: 'svelte5/index.js',
+        format: 'esm',
+      },
+    ],
+    external: ['@formajs/mold', 'svelte/store', 'svelte/internal'],
+  },
+  {
+    input: 'src/vue.js',
+    output: [
+      {
+        file: 'vue/index.js',
+        format: 'esm'
+      }
+    ],
+    external: ['@formajs/mold', 'vue']
   },
   {
     input: 'src/solid.js',

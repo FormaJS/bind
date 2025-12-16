@@ -33,8 +33,12 @@
       "types": "./types/felte.d.ts"
     },
     "./svelte5": {
-      "import": "./dist/svelte5.js",
+      "import": "./svelte5/index.js",
       "types": "./types/svelte5.d.ts"
+    },
+    "./vue": {
+      "import": "./vue/index.js",
+      "types": "./types/vue.d.ts"
     },
     "./solid": {
       "import": "./dist/solid.js",
@@ -43,6 +47,8 @@
   },
   "files": [
     "dist",
+    "svelte5",
+    "vue",
     "README.md",
     "LICENSE.md"
   ],
@@ -53,7 +59,8 @@
     "react-hook-form",
     "formik",
     "resolver",
-    "validator"
+    "validator",
+    "vue"
   ],
   "author": "FormaJS",
   "license": "MIT",
@@ -75,7 +82,8 @@
     "check": "npm run format && npm run lint"
   },
   "peerDependencies": {
-    "@formajs/mold": "^2.0.0"
+    "@formajs/mold": "^2.0.0",
+    "vue": "^3.0.0"
   },
   "peerDependenciesMeta": {
     "react-hook-form": {
@@ -95,6 +103,9 @@
     },
     "felte": {
       "optional": true
+    },
+    "vue": {
+      "optional": true
     }
   },
   "devDependencies": {
@@ -110,6 +121,7 @@
     "terser": "^5.44.0",
     "vitest": "^4.0.3",
     "react-hook-form": "^7.53.0",
-    "formik": "^2.4.6"
+    "formik": "^2.4.6",
+    "vue": "^3.0.0"
   }
 }
