@@ -42,6 +42,18 @@ module.exports = [
     external: ['@formajs/mold']
   },
   {
+    input: 'src/svelte5.js',
+    output: { file: 'dist/svelte5.js', format: 'es', sourcemap: false, exports: 'named' },
+    plugins: [resolve(), commonjs(), terser()],
+    external: ['@formajs/mold', 'svelte/store', 'svelte/internal']
+  },
+  {
+    input: 'src/solid.js',
+    output: { file: 'dist/solid.js', format: 'es', sourcemap: false, exports: 'named' },
+    plugins: [resolve(), commonjs(), terser()],
+    external: ['@formajs/mold', 'solid-js/store']
+  },
+  {
     input: 'src/index.js',
     output: { file: 'dist/index.js', format: 'es', sourcemap: false, exports: 'named' },
     plugins: [resolve(), commonjs(), terser()],

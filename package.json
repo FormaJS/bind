@@ -31,6 +31,14 @@
     "./felte": {
       "import": "./dist/felte.js",
       "types": "./types/felte.d.ts"
+    },
+    "./svelte5": {
+      "import": "./dist/svelte5.js",
+      "types": "./types/svelte5.d.ts"
+    },
+    "./solid": {
+      "import": "./dist/solid.js",
+      "types": "./types/solid.d.ts"
     }
   },
   "files": [
@@ -70,12 +78,24 @@
     "@formajs/mold": "^2.0.0"
   },
   "peerDependenciesMeta": {
-    "react-hook-form": { "optional": true },
-    "formik": { "optional": true },
-    "vee-validate": { "optional": true },
-    "@tanstack/react-form": { "optional": true },
-    "@mantine/form": { "optional": true },
-    "felte": { "optional": true }
+    "react-hook-form": {
+      "optional": true
+    },
+    "formik": {
+      "optional": true
+    },
+    "vee-validate": {
+      "optional": true
+    },
+    "@tanstack/react-form": {
+      "optional": true
+    },
+    "@mantine/form": {
+      "optional": true
+    },
+    "felte": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
