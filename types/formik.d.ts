@@ -1,6 +1,8 @@
-import type { MoldSchema, InferMoldInput } from './common';
+import type { MoldSchema, InferMoldInput } from "./common";
 
-export interface FormikBinderOptions { throwOnError?: boolean }
+export interface FormikBinderOptions {
+  throwOnError?: boolean;
+}
 
 export declare class ValidationError extends Error {
   errors: Record<string, any>;
@@ -17,7 +19,7 @@ export type ErrorsOf<T> =
 
 export declare function formikBinder<S extends MoldSchema<any, any>>(
   schema: S,
-  options?: FormikBinderOptions
+  options?: FormikBinderOptions,
 ): (values: InferMoldInput<S>) => Promise<ErrorsOf<InferMoldInput<S>>>;
 
 export { ValidationError };

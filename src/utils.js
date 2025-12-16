@@ -26,10 +26,16 @@ export function flattenMoldErrorsToRHF(moldErrors) {
             if (Array.isArray(arrErr) && arrErr[0] && arrErr[0].rule) {
               const path = basePath ? `${basePath}.${idx}` : idx;
               out[path] = { type: arrErr[0].rule, message: arrErr[0].message };
-            } else if (Array.isArray(arrErr) && arrErr.length === 1 && arrErr[0] && typeof arrErr[0] === 'object' && !arrErr[0].rule) {
+            } else if (
+              Array.isArray(arrErr) &&
+              arrErr.length === 1 &&
+              arrErr[0] &&
+              typeof arrErr[0] === "object" &&
+              !arrErr[0].rule
+            ) {
               // Wrapper interno de object schema dentro de array
               walk(arrErr[0], basePath ? `${basePath}.${idx}` : idx);
-            } else if (arrErr && typeof arrErr === 'object') {
+            } else if (arrErr && typeof arrErr === "object") {
               walk(arrErr, basePath ? `${basePath}.${idx}` : idx);
             }
           });
@@ -43,7 +49,12 @@ export function flattenMoldErrorsToRHF(moldErrors) {
         return;
       }
       // Wrapper de ObjectSchema: [ { fieldA: [...], fieldB: [...] } ]
-      if (node.length === 1 && node[0] && typeof node[0] === 'object' && !node[0].rule) {
+      if (
+        node.length === 1 &&
+        node[0] &&
+        typeof node[0] === "object" &&
+        !node[0].rule
+      ) {
         walk(node[0], basePath); // não adiciona índice artificial
         return;
       }
@@ -55,8 +66,12 @@ export function flattenMoldErrorsToRHF(moldErrors) {
         if (item && item.rule && item.message) {
           const path = basePath ? `${basePath}.${i}` : String(i);
           out[path] = { type: item.rule, message: item.message };
-        }
-        else if (item && typeof item === 'object' && !Array.isArray(item) && !item.rule) {
+        } else if (
+          item &&
+          typeof item === "object" &&
+          !Array.isArray(item) &&
+          !item.rule
+        ) {
           // Pode ser objeto de erros aninhados dentro de array (ex: array de objetos)
           const pathPrefix = basePath ? `${basePath}.${i}` : String(i);
           walk(item, pathPrefix);
@@ -70,10 +85,16 @@ export function flattenMoldErrorsToRHF(moldErrors) {
           if (Array.isArray(arrErr) && arrErr[0] && arrErr[0].rule) {
             const path = basePath ? `${basePath}.${idx}` : idx;
             out[path] = { type: arrErr[0].rule, message: arrErr[0].message };
-          } else if (Array.isArray(arrErr) && arrErr.length === 1 && arrErr[0] && typeof arrErr[0] === 'object' && !arrErr[0].rule) {
+          } else if (
+            Array.isArray(arrErr) &&
+            arrErr.length === 1 &&
+            arrErr[0] &&
+            typeof arrErr[0] === "object" &&
+            !arrErr[0].rule
+          ) {
             // Wrapper interno de object schema dentro de array
             walk(arrErr[0], basePath ? `${basePath}.${idx}` : idx);
-          } else if (arrErr && typeof arrErr === 'object') {
+          } else if (arrErr && typeof arrErr === "object") {
             // Nested (ex: array de objetos)
             walk(arrErr, basePath ? `${basePath}.${idx}` : idx);
           }
@@ -82,7 +103,7 @@ export function flattenMoldErrorsToRHF(moldErrors) {
       return;
     }
     // Objeto de campos
-    if (typeof node === 'object') {
+    if (typeof node === "object") {
       Object.keys(node).forEach((key) => {
         const value = node[key];
         const path = basePath ? `${basePath}.${key}` : key;
@@ -91,7 +112,7 @@ export function flattenMoldErrorsToRHF(moldErrors) {
     }
   };
 
-  walk(moldErrors, '');
+  walk(moldErrors, "");
   return out;
 }
 
@@ -122,11 +143,18 @@ export function transformMoldErrorsToFormik(moldErrors) {
         return node[0].message; // pega primeira mensagem
       }
       // Wrapper de ObjectSchema
-      if (node.length === 1 && node[0] && typeof node[0] === 'object' && !node[0].rule) {
+      if (
+        node.length === 1 &&
+        node[0] &&
+        typeof node[0] === "object" &&
+        !node[0].rule
+      ) {
         return convert(node[0]);
       }
       // Caso structure de array + items
-      const baseMessages = node.filter((e) => e && e.message).map((e) => e.message);
+      const baseMessages = node
+        .filter((e) => e && e.message)
+        .map((e) => e.message);
       const outArr = baseMessages.length ? baseMessages[0] : undefined;
       if (node.items) {
         const itemsObj = {};
@@ -140,7 +168,7 @@ export function transformMoldErrorsToFormik(moldErrors) {
       }
       return outArr;
     }
-    if (typeof node === 'object') {
+    if (typeof node === "object") {
       const out = {};
       Object.keys(node).forEach((k) => {
         const sub = convert(node[k]);
@@ -158,8 +186,8 @@ export function transformMoldErrorsToFormik(moldErrors) {
  */
 export class ValidationError extends Error {
   constructor(errors) {
-    super('Validation failed');
-    this.name = 'ValidationError';
+    super("Validation failed");
+    this.name = "ValidationError";
     this.errors = errors; // estrutura de erros transformada
   }
 }

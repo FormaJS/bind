@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable, get } from "svelte/store";
 
 /**
  * Achata erros produzidos pelo mold em notação de ponto para uso em bibliotecas
@@ -28,10 +28,16 @@ function flattenMoldErrorsToRHF(moldErrors) {
             if (Array.isArray(arrErr) && arrErr[0] && arrErr[0].rule) {
               const path = basePath ? `${basePath}.${idx}` : idx;
               out[path] = { type: arrErr[0].rule, message: arrErr[0].message };
-            } else if (Array.isArray(arrErr) && arrErr.length === 1 && arrErr[0] && typeof arrErr[0] === 'object' && !arrErr[0].rule) {
+            } else if (
+              Array.isArray(arrErr) &&
+              arrErr.length === 1 &&
+              arrErr[0] &&
+              typeof arrErr[0] === "object" &&
+              !arrErr[0].rule
+            ) {
               // Wrapper interno de object schema dentro de array
               walk(arrErr[0], basePath ? `${basePath}.${idx}` : idx);
-            } else if (arrErr && typeof arrErr === 'object') {
+            } else if (arrErr && typeof arrErr === "object") {
               walk(arrErr, basePath ? `${basePath}.${idx}` : idx);
             }
           });
@@ -45,7 +51,12 @@ function flattenMoldErrorsToRHF(moldErrors) {
         return;
       }
       // Wrapper de ObjectSchema: [ { fieldA: [...], fieldB: [...] } ]
-      if (node.length === 1 && node[0] && typeof node[0] === 'object' && !node[0].rule) {
+      if (
+        node.length === 1 &&
+        node[0] &&
+        typeof node[0] === "object" &&
+        !node[0].rule
+      ) {
         walk(node[0], basePath); // não adiciona índice artificial
         return;
       }
@@ -57,8 +68,12 @@ function flattenMoldErrorsToRHF(moldErrors) {
         if (item && item.rule && item.message) {
           const path = basePath ? `${basePath}.${i}` : String(i);
           out[path] = { type: item.rule, message: item.message };
-        }
-        else if (item && typeof item === 'object' && !Array.isArray(item) && !item.rule) {
+        } else if (
+          item &&
+          typeof item === "object" &&
+          !Array.isArray(item) &&
+          !item.rule
+        ) {
           // Pode ser objeto de erros aninhados dentro de array (ex: array de objetos)
           const pathPrefix = basePath ? `${basePath}.${i}` : String(i);
           walk(item, pathPrefix);
@@ -72,10 +87,16 @@ function flattenMoldErrorsToRHF(moldErrors) {
           if (Array.isArray(arrErr) && arrErr[0] && arrErr[0].rule) {
             const path = basePath ? `${basePath}.${idx}` : idx;
             out[path] = { type: arrErr[0].rule, message: arrErr[0].message };
-          } else if (Array.isArray(arrErr) && arrErr.length === 1 && arrErr[0] && typeof arrErr[0] === 'object' && !arrErr[0].rule) {
+          } else if (
+            Array.isArray(arrErr) &&
+            arrErr.length === 1 &&
+            arrErr[0] &&
+            typeof arrErr[0] === "object" &&
+            !arrErr[0].rule
+          ) {
             // Wrapper interno de object schema dentro de array
             walk(arrErr[0], basePath ? `${basePath}.${idx}` : idx);
-          } else if (arrErr && typeof arrErr === 'object') {
+          } else if (arrErr && typeof arrErr === "object") {
             // Nested (ex: array de objetos)
             walk(arrErr, basePath ? `${basePath}.${idx}` : idx);
           }
@@ -84,7 +105,7 @@ function flattenMoldErrorsToRHF(moldErrors) {
       return;
     }
     // Objeto de campos
-    if (typeof node === 'object') {
+    if (typeof node === "object") {
       Object.keys(node).forEach((key) => {
         const value = node[key];
         const path = basePath ? `${basePath}.${key}` : key;
@@ -93,7 +114,7 @@ function flattenMoldErrorsToRHF(moldErrors) {
     }
   };
 
-  walk(moldErrors, '');
+  walk(moldErrors, "");
   return out;
 }
 
@@ -105,58 +126,60 @@ function flattenMoldErrorsToRHF(moldErrors) {
  * @returns {object} { form, errors, isSubmitting, handleChange, handleSubmit }
  */
 function svelteBinder(schema, initialValues = {}) {
-    if (!schema || typeof schema.validate !== 'function') {
-        throw new Error('svelteBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error(
+      "svelteBinder requires a mold schema with a validate method",
+    );
+  }
+
+  // Create stores
+  const values = writable(initialValues);
+  const errors = writable({});
+  const isSubmitting = writable(false);
+  const isValid = writable(true);
+
+  const validate = async (currentValues) => {
+    const result = await schema.validate(currentValues);
+    if (result.valid) {
+      errors.set({});
+      isValid.set(true);
+      return { valid: true, values: result.value };
+    } else {
+      const flatErrors = flattenMoldErrorsToRHF(result.errors);
+      errors.set(flatErrors);
+      isValid.set(false);
+      return { valid: false, errors: flatErrors };
     }
+  };
 
-    // Create stores
-    const values = writable(initialValues);
-    const errors = writable({});
-    const isSubmitting = writable(false);
-    const isValid = writable(true);
+  const handleChange = (field, value) => {
+    values.update((v) => ({ ...v, [field]: value }));
+  };
 
-    const validate = async (currentValues) => {
-        const result = await schema.validate(currentValues);
-        if (result.valid) {
-            errors.set({});
-            isValid.set(true);
-            return { valid: true, values: result.value };
-        } else {
-            const flatErrors = flattenMoldErrorsToRHF(result.errors);
-            errors.set(flatErrors);
-            isValid.set(false);
-            return { valid: false, errors: flatErrors };
-        }
-    };
+  const handleSubmit = (onSubmit) => async (e) => {
+    e?.preventDefault();
+    isSubmitting.set(true);
+    const currentValues = get(values);
 
-    const handleChange = (field, value) => {
-        values.update(v => ({ ...v, [field]: value }));
-    };
+    try {
+      const result = await validate(currentValues);
+      if (result.valid) {
+        await onSubmit(result.values);
+      }
+    } finally {
+      isSubmitting.set(false);
+    }
+  };
 
-    const handleSubmit = (onSubmit) => async (e) => {
-        e?.preventDefault();
-        isSubmitting.set(true);
-        const currentValues = get(values);
-
-        try {
-            const result = await validate(currentValues);
-            if (result.valid) {
-                await onSubmit(result.values);
-            }
-        } finally {
-            isSubmitting.set(false);
-        }
-    };
-
-    return {
-        values,
-        errors,
-        isSubmitting,
-        isValid,
-        handleChange,
-        handleSubmit,
-        validate: () => validate(get(values))
-    };
+  return {
+    values,
+    errors,
+    isSubmitting,
+    isValid,
+    handleChange,
+    handleSubmit,
+    validate: () => validate(get(values)),
+  };
 }
 
 export { svelteBinder };

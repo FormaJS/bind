@@ -1,4 +1,4 @@
-import { transformMoldErrorsToFormik } from './utils.js';
+import { transformMoldErrorsToFormik } from "./utils.js";
 
 /**
  * Binder para Felte.
@@ -7,8 +7,10 @@ import { transformMoldErrorsToFormik } from './utils.js';
  * @returns {(values:any) => Promise<object>}
  */
 export function felteBinder(schema) {
-  if (!schema || typeof schema.validate !== 'function') {
-    throw new Error('felteBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error(
+      "felteBinder requires a mold schema with a validate method",
+    );
   }
   return async (values) => {
     const result = await schema.validate(values);

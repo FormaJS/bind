@@ -39,23 +39,25 @@ export function UserForm() {
   );
 ```
 
-
 ```js
-import { forma } from '@formajs/mold';
-import { formikBinder } from '@formajs/bind/formik';
-const userSchema = forma.object({
-});
+import { forma } from "@formajs/mold";
+import { formikBinder } from "@formajs/bind/formik";
+const userSchema = forma.object({});
 export function UserForm() {
   const validate = formikBinder(userSchema);
 
   const formik = useFormik({
-    initialValues: { name: '' },
+    initialValues: { name: "" },
     validate,
     onSubmit: (values) => console.log(values),
   });
   return (
     <form onSubmit={formik.handleSubmit}>
-      <input name="name" value={formik.values.name} onChange={formik.handleChange} />
+      <input
+        name="name"
+        value={formik.values.name}
+        onChange={formik.handleChange}
+      />
       {formik.errors.name && <p>{formik.errors.name}</p>}
       <button type="submit">Submit</button>
     </form>
@@ -86,7 +88,7 @@ export function UserForm() {
 ### TanStack React Form
 
 ```ts
-import { tanstackBinder } from '@formajs/bind/tanstack';
+import { tanstackBinder } from "@formajs/bind/tanstack";
 const validate = tanstackBinder(userSchema);
 // In form config: formOptions = { validator: validate }
 ```
@@ -94,14 +96,14 @@ const validate = tanstackBinder(userSchema);
 ### Mantine Form
 
 ```ts
-import { mantineBinder } from '@formajs/bind/mantine';
+import { mantineBinder } from "@formajs/bind/mantine";
 const form = useForm({ initialValues, validate: mantineBinder(userSchema) });
 ```
 
 ### Felte
 
 ```ts
-import { felteBinder } from '@formajs/bind/felte';
+import { felteBinder } from "@formajs/bind/felte";
 const validate = felteBinder(userSchema);
 // Pass validate when creating the Felte form
 ```
@@ -113,25 +115,27 @@ const validate = felteBinder(userSchema);
 Mold v2 exposes FormaJS v2 formatters for dates, currency, phone numbers, and more:
 
 ```js
-import { forma } from '@formajs/mold';
+import { forma } from "@formajs/mold";
 
 // Format dates
-const dateSchema = forma.string()
+const dateSchema = forma
+  .string()
   .validateDate()
-  .formatDate({ format: 'DD/MM/YYYY' });
+  .formatDate({ format: "DD/MM/YYYY" });
 
 // Format currency with locale
-const priceSchema = forma.string()
-  .formatCurrency({ locale: 'pt-BR', currency: 'BRL' });
+const priceSchema = forma
+  .string()
+  .formatCurrency({ locale: "pt-BR", currency: "BRL" });
 
 // Format mobile numbers
-const phoneSchema = forma.string()
-  .formatMobileNumber({ locale: 'pt-BR' });
+const phoneSchema = forma.string().formatMobileNumber({ locale: "pt-BR" });
 
 // Format tax IDs
-const taxSchema = forma.string()
-  .validateTaxId({ locale: 'pt-BR', strict: true })
-  .formatTaxId({ locale: 'pt-BR' });
+const taxSchema = forma
+  .string()
+  .validateTaxId({ locale: "pt-BR", strict: true })
+  .formatTaxId({ locale: "pt-BR" });
 ```
 
 ### Locale Support
@@ -139,17 +143,17 @@ const taxSchema = forma.string()
 To use locale-specific validators and formatters with Mold v2, ensure the locale is registered:
 
 ```js
-import { forma } from '@formajs/mold';
+import { forma } from "@formajs/mold";
 // Register pt-BR locale (opt-in for Forma v2)
-import '@formajs/formajs/i18n/pt-BR';
+import "@formajs/formajs/i18n/pt-BR";
 
 // Or use async registration
-await forma.setLocaleAsync('pt-BR');
+await forma.setLocaleAsync("pt-BR");
 
 // Now validators and formatters will use pt-BR rules
 const schema = forma.object({
-  cpf: forma.string().validateTaxId({ locale: 'pt-BR' }),
-  phone: forma.string().formatMobileNumber({ locale: 'pt-BR' }),
+  cpf: forma.string().validateTaxId({ locale: "pt-BR" }),
+  phone: forma.string().formatMobileNumber({ locale: "pt-BR" }),
 });
 ```
 

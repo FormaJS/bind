@@ -1,4 +1,4 @@
-import { flattenMoldErrorsToRHF } from './utils.js';
+import { flattenMoldErrorsToRHF } from "./utils.js";
 
 /**
  * Cria um resolver para React Hook Form a partir de um schema do @formajs/mold.
@@ -8,8 +8,8 @@ import { flattenMoldErrorsToRHF } from './utils.js';
  * @returns {(data: T, context?: any, options?: any) => Promise<{ values: T, errors: Record<string,{type:string,message:string}> }>} RHF resolver
  */
 export function rhfBinder(schema) {
-  if (!schema || typeof schema.validate !== 'function') {
-    throw new Error('rhfBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error("rhfBinder requires a mold schema with a validate method");
   }
   return async (data) => {
     const result = await schema.validate(data);

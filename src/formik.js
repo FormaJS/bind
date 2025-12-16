@@ -1,4 +1,4 @@
-import { transformMoldErrorsToFormik, ValidationError } from './utils.js';
+import { transformMoldErrorsToFormik, ValidationError } from "./utils.js";
 
 /**
  * Cria um validador para Formik a partir de um schema do @formajs/mold.
@@ -10,8 +10,10 @@ import { transformMoldErrorsToFormik, ValidationError } from './utils.js';
  */
 export function formikBinder(schema, options = {}) {
   const { throwOnError = false } = options;
-  if (!schema || typeof schema.validate !== 'function') {
-    throw new Error('formikBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error(
+      "formikBinder requires a mold schema with a validate method",
+    );
   }
   return async (values) => {
     const result = await schema.validate(values);

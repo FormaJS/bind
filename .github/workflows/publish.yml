@@ -3,7 +3,7 @@ name: Publish to npm on tag
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: read
@@ -17,10 +17,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@formajs'
-          cache: 'npm'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          scope: "@formajs"
+          cache: "npm"
 
       - name: Verify tag matches package.json version
         run: |
@@ -44,4 +44,4 @@ jobs:
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --provenance --access public 
+        run: npm publish --provenance --access public

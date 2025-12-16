@@ -6,9 +6,17 @@ export interface MoldValidationResult<TOut> {
 }
 
 // Estrutura recursiva de erros do mold (simplificada para typing).
-export type MoldErrorsLeaf = { rule: string; message: string; context?: Record<string, any> | null };
-export type MoldErrorsArray = Array<MoldErrorsLeaf | MoldErrorsTree | undefined> & { items?: MoldErrorsArray };
-export type MoldErrorsTree = { [key: string]: MoldErrorsArray | MoldErrorsTree | MoldErrorsLeaf[] };
+export type MoldErrorsLeaf = {
+  rule: string;
+  message: string;
+  context?: Record<string, any> | null;
+};
+export type MoldErrorsArray = Array<
+  MoldErrorsLeaf | MoldErrorsTree | undefined
+> & { items?: MoldErrorsArray };
+export type MoldErrorsTree = {
+  [key: string]: MoldErrorsArray | MoldErrorsTree | MoldErrorsLeaf[];
+};
 
 // Schema de Mold com entrada e saída (pode sanitizar/parsing transformando tipos).
 export interface MoldSchema<TIn, TOut = TIn> {

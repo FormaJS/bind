@@ -1,4 +1,4 @@
-import { transformMoldErrorsToFormik } from './utils.js';
+import { transformMoldErrorsToFormik } from "./utils.js";
 
 /**
  * Binder para @mantine/form.
@@ -8,8 +8,10 @@ import { transformMoldErrorsToFormik } from './utils.js';
  * @returns {(values:any) => Promise<object>}
  */
 export function mantineBinder(schema) {
-  if (!schema || typeof schema.validate !== 'function') {
-    throw new Error('mantineBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error(
+      "mantineBinder requires a mold schema with a validate method",
+    );
   }
   return async (values) => {
     const result = await schema.validate(values);

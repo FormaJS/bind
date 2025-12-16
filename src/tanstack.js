@@ -1,4 +1,4 @@
-import { flattenMoldErrorsToRHF } from './utils.js';
+import { flattenMoldErrorsToRHF } from "./utils.js";
 
 /**
  * Binder para TanStack React Form.
@@ -9,8 +9,10 @@ import { flattenMoldErrorsToRHF } from './utils.js';
  * @returns {(values:any) => Promise<Record<string,string>>}
  */
 export function tanstackBinder(schema) {
-  if (!schema || typeof schema.validate !== 'function') {
-    throw new Error('tanstackBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error(
+      "tanstackBinder requires a mold schema with a validate method",
+    );
   }
   return async (values) => {
     const result = await schema.validate(values);

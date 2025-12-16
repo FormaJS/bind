@@ -1,4 +1,4 @@
-import { flattenMoldErrorsToRHF } from './utils.js';
+import { flattenMoldErrorsToRHF } from "./utils.js";
 
 /**
  * Cria um validador para VeeValidate a partir de um schema do @formajs/mold.
@@ -9,8 +9,8 @@ import { flattenMoldErrorsToRHF } from './utils.js';
  * @returns {(values:any) => Promise<Record<string,string>>}
  */
 export function veeBinder(schema) {
-  if (!schema || typeof schema.validate !== 'function') {
-    throw new Error('veeBinder requires a mold schema with a validate method');
+  if (!schema || typeof schema.validate !== "function") {
+    throw new Error("veeBinder requires a mold schema with a validate method");
   }
   return async (values) => {
     const result = await schema.validate(values);
